@@ -5,9 +5,9 @@ package cn.wzx.tree;
  *
  */
 public class TreeNode {
-	int value;				//节点的权，携带的数据
-	TreeNode leftNode;		//左子节点
-	TreeNode rightNode;		//右子节点
+	public int value;				//节点的权，携带的数据
+	public TreeNode leftNode;		//左子节点
+	public TreeNode rightNode;		//右子节点
 	
 	
 	
