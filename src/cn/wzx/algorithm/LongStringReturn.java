@@ -46,6 +46,6 @@ public class LongStringReturn {
             left--;
             right++;
         }
-        return right - left - 1;
+        return right - left - 1;	//注意边界条件，此时right和left是不满足情况时退出的
     }
 }
