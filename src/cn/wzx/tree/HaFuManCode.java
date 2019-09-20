@@ -1,5 +1,13 @@
 package cn.wzx.tree;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,16 +22,75 @@ import java.util.Map.Entry;
 public class HaFuManCode {
 	static Map<Byte, String> mapCode;		//哈夫曼编码集
 	public static void main(String[] args) {
-		String str="i want to a offer aaaaa!";
-		byte[] bytes = str.getBytes();				//将字符串转为字节数组				
-		byte[] HFbytes = haFuManCode(bytes);		//完成哈夫曼编码
-		System.out.println("编码前长度："+bytes.length);
-		System.out.println("编码后长度："+HFbytes.length);
-		byte[] newBytes = decode(HFbytes,mapCode);	//进行解码
-		System.out.println(new String(newBytes));	//还原字符串
-		 
+//		String str="i want to a offer aaaaa!";
+//		byte[] bytes = str.getBytes();				//将字符串转为字节数组				
+//		byte[] HFbytes = haFuManCode(bytes);		//完成哈夫曼编码
+//		System.out.println("编码前长度："+bytes.length);
+//		System.out.println("编码后长度："+HFbytes.length);
+//		byte[] newBytes = decode(HFbytes,mapCode);	//进行解码
+//		System.out.println(new String(newBytes));	//还原字符串
+		
+		//压缩文件
+		String src="src/src.gif";
+		String dest="src/dest.zip";
+		String str="src/unzip.gif";
+		hFZipFile(src,dest);		//压缩文件
+		unZipFile(dest,str);		//解压文件
 	}
 	
+	
+	private static void unZipFile(String src, String dest) {
+		try {
+			InputStream is=new FileInputStream(src);
+			ObjectInputStream ois=new ObjectInputStream(is);
+			byte[] HFbytes = (byte[]) ois.readObject();			//读取字节数组
+			Map<Byte, String> map = (Map<Byte, String>) ois.readObject();	//读取哈夫曼编码表
+			ois.close();
+			is.close();
+			byte[] newBytes = decode(HFbytes,map);	//进行解码
+			OutputStream os=new FileOutputStream(dest);	//创建输出流
+			os.write(newBytes);
+			os.close();					
+			
+		} catch (FileNotFoundException e) {		
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+
+	/*
+	 * 进行文件压缩
+	 */
+	private static void hFZipFile(String src, String dest) {
+		try {
+			FileInputStream is=new FileInputStream(src);
+			byte[] bArray=new byte[is.available()];		//创建一个和文件大小相等的字节数组
+			is.read(bArray);							//一次性将文件读进bArray数组
+			byte[] HFbytes = haFuManCode(bArray);		//将读取的数组进行哈夫曼编码
+			System.out.println(bArray.length);
+			System.out.println(HFbytes.length);
+						
+			OutputStream os=new FileOutputStream(dest);		//创建输出流
+			ObjectOutputStream oss=new ObjectOutputStream(os);	//对象修饰流
+			oss.writeObject(HFbytes);			//将压缩后的字节数组写出到文件
+			oss.writeObject(mapCode);			//将哈夫曼编码表也写出到文件，便于恢复
+			oss.close();
+			os.close();
+			is.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 	/**
 	 * 进行解码
 	 * @param hFbytes
