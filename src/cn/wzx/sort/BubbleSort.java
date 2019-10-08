@@ -7,17 +7,19 @@ package cn.wzx.sort;
  */
 public class BubbleSort {
 	public static void main(String[] args) {
-		int[] intarr=new int[] {8,1,9,7,53,11,23,4,6,7};
-		for (int i = 0; i < intarr.length; i++) {
-			for (int j = i+1; j < intarr.length; j++) {
-				if(intarr[i]>intarr[j]) {
-					int temp=intarr[i];
-					intarr[i]=intarr[j];
-					intarr[j]=temp;
+		int[] a=new int[] {8,1,9,7,53,11,23,4,6,7};
+		for (int i = 1; i < a.length; i++) {
+			if(a[i]<a[i-1]) {
+				int temp=a[i];
+				int j;
+				for (j = i-1; j >=0&&temp<a[j]; j--) {
+					a[j+1]=a[j];
 				}
+				a[j+1]=temp;
 			}
 		}
-		arrToString(intarr);
+	
+		arrToString(a);
 	}
 	
 	
