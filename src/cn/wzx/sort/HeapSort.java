@@ -7,7 +7,7 @@ package cn.wzx.sort;
  */
 public class HeapSort {
 	public static void main(String[] args) {
-		int[] data=new int[] {8,1,9,7,8,593,53,11,23,156,308,15,0,4,6,7,40,36,106};
+		int[] data=new int[] {8,1,9,7,8,593,53,11,20,23,156,308,15,0,4,6,7,40,36,106};
 		heapSort(data);
 		BubbleSort.arrToString(data);
 	}
@@ -33,12 +33,12 @@ public class HeapSort {
 		if(data!=null) {
 			int leftNode=2*index+1;		//左子节点
 			int righttNode=2*index+2;	//右子节点
-			//判断左孙节点是否存在
-			if(4*index+3<size) {
+			//判断左子节点是否为空
+			if(leftNode<size) {
 				heap(data,size,leftNode);
 			}
-			//判断右孙节点是否存在
-			if(4*index+4<size) {
+			//判断右子节点是否为空
+			if(righttNode<size) {
 				heap(data,size,righttNode);
 			}
 			int max=index;
@@ -52,7 +52,7 @@ public class HeapSort {
 				int temp=data[index];
 				data[index]=data[max];
 				data[max]=temp;
-				heap(data,size,max);
+				heap(data,size,max);	//判断后的子树是否为最大堆
 			}
 			
 		}
